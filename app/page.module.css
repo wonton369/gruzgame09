@@ -1,0 +1,300 @@
+.container {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #e8f5e3;
+}
+
+.forestLayer {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(45, 90, 55, 0.55), transparent 70%),
+    radial-gradient(circle at 15% 20%, rgba(120, 200, 100, 0.2), transparent 35%),
+    radial-gradient(circle at 85% 30%, rgba(80, 160, 90, 0.15), transparent 40%),
+    linear-gradient(180deg, #0a1620 0%, #0d1f12 35%, #1a3d24 70%, #2d5a38 100%);
+  z-index: 0;
+}
+
+.mistLayer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(200, 230, 210, 0.08), transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fireflyLayer {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 240, 150, 0.9) 1px, transparent 2px);
+  background-size: 140px 140px;
+  opacity: 0.25;
+  animation: drift 22s linear infinite;
+  z-index: 2;
+}
+
+@keyframes drift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-36px);
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 4;
+  width: min(96vw, 560px);
+  border-radius: 20px;
+  padding: 20px;
+  background: rgba(13, 31, 18, 0.88);
+  border: 2px solid rgba(100, 180, 110, 0.45);
+  backdrop-filter: blur(10px);
+  box-shadow:
+    0 0 0 1px rgba(168, 230, 161, 0.12),
+    0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.crest {
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: #a8e6a1;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  text-align: center;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+  color: #d4f0c8;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.82rem;
+  opacity: 0.88;
+  margin-bottom: 12px;
+  letter-spacing: 0.15em;
+  color: #9bc99a;
+}
+
+.configWarning {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  background: rgba(80, 60, 20, 0.35);
+  border: 1px solid rgba(220, 180, 80, 0.4);
+  color: #f0e6b8;
+}
+
+.configWarning code {
+  font-size: 0.72rem;
+  word-break: break-all;
+}
+
+.playerLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: rgba(30, 60, 40, 0.6);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+}
+
+.walletPanel {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.walletOptions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.disconnectButton {
+  border: 1px solid rgba(168, 230, 161, 0.45);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #c8e8c0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.scorePanel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.metaLabel {
+  font-size: 0.72rem;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metaValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #b8f0a8;
+}
+
+.hint {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  text-align: center;
+  margin: 8px 0;
+}
+
+.warning {
+  color: #ffd89b;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #ff9b9b;
+  text-align: center;
+  font-size: 0.88rem;
+  margin-bottom: 8px;
+}
+
+.menuButtons {
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.forestButton {
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #0d1f12;
+  background: linear-gradient(180deg, #8fd48a 0%, #4a9a52 100%);
+  box-shadow: 0 4px 0 #2d5a38;
+  transition: transform 0.1s ease;
+}
+
+.forestButton:active:not(:disabled) {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #2d5a38;
+}
+
+.forestButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.smallButton {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(168, 230, 161, 0.5);
+  background: rgba(30, 60, 40, 0.8);
+  color: #e8f5e3;
+  cursor: pointer;
+}
+
+.viewBlock {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.hedgehogButton {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  border: 2px solid rgba(168, 230, 161, 0.35);
+  border-radius: 20px;
+  background: rgba(20, 45, 28, 0.7);
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.hedgehogButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.hedgehogArt {
+  width: min(280px, 80vw);
+  height: auto;
+  border-radius: 16px;
+}
+
+.hedgehogCaption {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #d4f0c8;
+}
+
+.checkinText {
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.timer {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #b8f0a8;
+  margin: 8px 0;
+}
+
+.leaderboard {
+  display: grid;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+
+.leaderboardRow {
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(30, 60, 40, 0.5);
+  font-size: 0.85rem;
+}
+
+.backButton {
+  margin-top: 14px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid rgba(168, 230, 161, 0.35);
+  border-radius: 10px;
+  background: transparent;
+  color: #c8e8c0;
+  cursor: pointer;
+}
+
+.backButton:disabled {
+  opacity: 0.5;
+}

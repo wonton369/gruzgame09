@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Forest hedgehog">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#a8e6a1"/>
+      <stop offset="100%" stop-color="#1a3d24"/>
+    </radialGradient>
+    <linearGradient id="spine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#5c4a32"/>
+      <stop offset="100%" stop-color="#2d2418"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" fill="url(#glow)"/>
+  <ellipse cx="160" cy="200" rx="95" ry="70" fill="#3d2914"/>
+  <g fill="url(#spine)">
+    <path d="M95 175 L88 130 L102 175 Z"/>
+    <path d="M115 168 L108 115 L125 168 Z"/>
+    <path d="M140 162 L132 100 L150 162 Z"/>
+    <path d="M165 158 L158 92 L178 158 Z"/>
+    <path d="M190 162 L182 100 L202 162 Z"/>
+    <path d="M215 168 L208 115 L225 168 Z"/>
+    <path d="M235 175 L228 130 L242 175 Z"/>
+  </g>
+  <ellipse cx="160" cy="195" rx="78" ry="58" fill="#6b5344"/>
+  <ellipse cx="220" cy="210" rx="42" ry="32" fill="#7a6352"/>
+  <circle cx="238" cy="205" r="5" fill="#1a1208"/>
+  <circle cx="240" cy="203" r="1.8" fill="#fff"/>
+  <ellipse cx="248" cy="218" rx="8" ry="5" fill="#4a3528"/>
+  <ellipse cx="125" cy="235" rx="22" ry="14" fill="#5a4638"/>
+  <ellipse cx="195" cy="235" rx="22" ry="14" fill="#5a4638"/>
+  <text x="160" y="295" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="18" fill="#d4f0c8" opacity="0.9"><2 TAP ME <2</text>
+</svg>
