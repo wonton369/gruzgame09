@@ -7,6 +7,9 @@ const ZERO = "0x0000000000000000000000000000000000000000" as const;
 /** Deployed on Base Mainnet — https://basescan.org/address/0x054b776ECe686546Ad23A8e2C6a9D66e0f963315 */
 export const GRUZGAME09_CONTRACT_ADDRESS_DEFAULT =
   "0x054b776ECe686546Ad23A8e2C6a9D66e0f963315" as const;
+export const GRUZGAME09_BUILDER_CODE_DEFAULT = "bc_4mesnvaw";
+export const GRUZGAME09_BUILDER_CODE_DATA_SUFFIX_DEFAULT =
+  "0x62635f346d65736e7661770b0080218021802180218021802180218021" as const;
 
 export const gruzGame09OnchainAbi = [
   {
@@ -43,7 +46,9 @@ export function isGruzGame09ContractConfigured(): boolean {
  * NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX must start with 0x.
  */
 export function withGruzGame09BuilderCodeDataSuffix(data: `0x${string}`): `0x${string}` {
-  const suffix = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX?.trim();
+  const suffix =
+    process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX?.trim() ||
+    GRUZGAME09_BUILDER_CODE_DATA_SUFFIX_DEFAULT;
   if (!suffix?.startsWith("0x") || suffix.length <= 2) {
     return data;
   }
@@ -51,11 +56,13 @@ export function withGruzGame09BuilderCodeDataSuffix(data: `0x${string}`): `0x${s
 }
 
 export function isGruzGame09BuilderConfigured(): boolean {
-  const suffix = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX?.trim();
+  const suffix =
+    process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX?.trim() ||
+    GRUZGAME09_BUILDER_CODE_DATA_SUFFIX_DEFAULT;
   return Boolean(suffix?.startsWith("0x") && suffix.length > 2);
 }
 
 export function getGruzGame09BuilderCode(): string | null {
-  const code = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE?.trim();
+  const code = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE?.trim() || GRUZGAME09_BUILDER_CODE_DEFAULT;
   return code && code.length > 0 ? code : null;
 }

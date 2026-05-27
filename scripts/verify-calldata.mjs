@@ -1,8 +1,10 @@
 import { encodeFunctionData } from "viem";
 import { Attribution } from "ox/erc8021";
 
-const builderCode = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE?.trim();
-const suffixEnv = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX?.trim();
+const builderCode = process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE?.trim() || "bc_4mesnvaw";
+const suffixEnv =
+  process.env.NEXT_PUBLIC_GRUZGAME09_BUILDER_CODE_DATA_SUFFIX?.trim() ||
+  "0x62635f346d65736e7661770b0080218021802180218021802180218021";
 
 const abi = [
   {

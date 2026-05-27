@@ -44,7 +44,7 @@ interface LeaderboardRow {
 interface PlayerState {
   score: number;
   streak: number;
-  lastCheckinSlot: number | null;
+  lastCheckinAtMs: number | null;
   totalCheckins: number;
 }
 
@@ -68,10 +68,10 @@ function getCurrentCheckinSlot(nowMs: number = Date.now()): number {
   return Math.floor(nowMs / (CHECKIN_INTERVAL_SECONDS * 1000));
 }
 
-function getSecondsToNextCheckinWindow(nowMs: number = Date.now()): number {
-  const nowSeconds = Math.floor(nowMs / 1000);
-  const remainder = nowSeconds % CHECKIN_INTERVAL_SECONDS;
-  return remainder === 0 ? CHECKIN_INTERVAL_SECONDS : CHECKIN_INTERVAL_SECONDS - remainder;
+function getSecondsToNextCheckinWindow(lastCheckinAtMs: number | null, nowMs: number = Date.now()): number {
+  if (!lastCheckinAtMs) return 0;
+  const elapsedSeconds = Math.floor((nowMs - lastCheckinAtMs) / 1000);
+  return Math.max(0, CHECKIN_INTERVAL_SECONDS - elapsedSeconds);
 }
 
 function parsePlayers(): Record<string, PlayerState> {
@@ -79,8 +79,26 @@ function parsePlayers(): Record<string, PlayerState> {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return {};
-    const parsed = JSON.parse(raw) as Record<string, PlayerState>;
-    return parsed ?? {};
+    const parsed = JSON.parse(raw) as Record<
+      string,
+      Partial<PlayerState> & { lastCheckinSlot?: number | null }
+    >;
+    const normalized: Record<string, PlayerState> = {};
+    for (const [wallet, player] of Object.entries(parsed ?? {})) {
+      const legacyLastSlot = typeof player.lastCheckinSlot === "number" ? player.lastCheckinSlot : null;
+      normalized[wallet] = {
+        score: Number(player.score ?? 0),
+        streak: Number(player.streak ?? 0),
+        totalCheckins: Number(player.totalCheckins ?? 0),
+        lastCheckinAtMs:
+          typeof player.lastCheckinAtMs === "number"
+            ? player.lastCheckinAtMs
+            : legacyLastSlot !== null
+              ? legacyLastSlot * CHECKIN_INTERVAL_SECONDS * 1000
+              : null,
+      };
+    }
+    return normalized;
   } catch {
     return {};
   }
@@ -166,20 +184,21 @@ export default function Home() {
       const player = players[key] ?? {
         score: 0,
         streak: 0,
-        lastCheckinSlot: null,
+        lastCheckinAtMs: null,
         totalCheckins: 0,
       };
-      const canCheckinNow = player.lastCheckinSlot !== currentSlot;
+      const secondsToNext = getSecondsToNextCheckinWindow(player.lastCheckinAtMs);
+      const canCheckinNow = secondsToNext === 0;
 
       setState({
         score: player.score,
         streak: player.streak,
         multiplier: 1 + player.streak * 0.1,
         canCheckinNow,
-        todayKey: String(currentSlot),
+        todayKey: String(currentSlot), // keeps compatibility with current UI shape
         totalCheckins: player.totalCheckins,
       });
-      setCountdown(formatCountdownFromSeconds(getSecondsToNextCheckinWindow()));
+      setCountdown(formatCountdownFromSeconds(secondsToNext));
       updateLeaderboard();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Ошибка чтения локального состояния.");
@@ -193,18 +212,10 @@ export default function Home() {
   }, [isConnected, address, fetchState]);
 
   useEffect(() => {
-    let remaining = getSecondsToNextCheckinWindow();
-    const tick = () => {
-      setCountdown(formatCountdownFromSeconds(remaining));
-      if (remaining <= 0) {
-        remaining = getSecondsToNextCheckinWindow();
-        void fetchState();
-      } else {
-        remaining = Math.max(0, remaining - 1);
-      }
-    };
-    tick();
-    const interval = setInterval(tick, 1000);
+    void fetchState();
+    const interval = setInterval(() => {
+      void fetchState();
+    }, 1000);
     return () => clearInterval(interval);
   }, [fetchState]);
 
@@ -213,25 +224,23 @@ export default function Home() {
       if (!isTxMined || !isSubmittingCheckin || !address) return;
       const players = parsePlayers();
       const key = address.toLowerCase();
-      const currentSlot = getCurrentCheckinSlot();
-      const previousSlot = currentSlot - 1;
+      const nowMs = Date.now();
       const player = players[key] ?? {
         score: 0,
         streak: 0,
-        lastCheckinSlot: null,
+        lastCheckinAtMs: null,
         totalCheckins: 0,
       };
-
-      if (player.lastCheckinSlot !== currentSlot) {
-        const nextStreak = player.lastCheckinSlot === previousSlot ? player.streak + 1 : 1;
-        players[key] = {
-          ...player,
-          streak: nextStreak,
-          lastCheckinSlot: currentSlot,
-          totalCheckins: player.totalCheckins + 1,
-        };
-        savePlayers(players);
-      }
+      const secondsSincePrev =
+        player.lastCheckinAtMs === null ? Number.POSITIVE_INFINITY : Math.floor((nowMs - player.lastCheckinAtMs) / 1000);
+      const nextStreak = secondsSincePrev <= CHECKIN_INTERVAL_SECONDS ? player.streak + 1 : 1;
+      players[key] = {
+        ...player,
+        streak: nextStreak,
+        lastCheckinAtMs: nowMs,
+        totalCheckins: player.totalCheckins + 1,
+      };
+      savePlayers(players);
 
       setIsSubmittingCheckin(false);
       await fetchState();
@@ -247,7 +256,7 @@ export default function Home() {
       const player = players[key] ?? {
         score: 0,
         streak: 0,
-        lastCheckinSlot: null,
+        lastCheckinAtMs: null,
         totalCheckins: 0,
       };
       const tapPoints = pendingTaps * (1 + player.streak * 0.1);

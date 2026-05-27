@@ -27,5 +27,5 @@
   <ellipse cx="248" cy="218" rx="8" ry="5" fill="#4a3528"/>
   <ellipse cx="125" cy="235" rx="22" ry="14" fill="#5a4638"/>
   <ellipse cx="195" cy="235" rx="22" ry="14" fill="#5a4638"/>
-  <text x="160" y="295" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="18" fill="#d4f0c8" opacity="0.9"><2 TAP ME <2</text>
+  <text x="160" y="295" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="18" fill="#d4f0c8" opacity="0.9">TAP ME</text>
 </svg>
