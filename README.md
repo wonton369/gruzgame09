@@ -49,6 +49,8 @@ http://localhost:3009
 ## Git (wonton369)
 
 ```bash
+
+`contracts/GruzGame09Onchain.sol` — Base Mainnet: `0x054b776ECe686546Ad23A8e2C6a9D66e0f963315`
 git config user.email "wonton336699@gmail.com"
 git config user.name "wonton369"
 ```
