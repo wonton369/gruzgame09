@@ -1,5 +1,5 @@
 # Forest Hedgehog Tap (gruzgame09)
-
+1x
 Base App mini app on [Base](https://base.org): tap the hedgehog, batch taps onchain, check-in every 2 minutes, local leaderboard.
 
 ## Environment
